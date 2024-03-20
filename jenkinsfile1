@@ -11,5 +11,13 @@ pipeline{
                 }
             }
         }
+        stage("Test a code"){
+            steps{
+                script{
+
+                    sh "mvn clean install"
+                }
+            }
+        }
     }
 }
