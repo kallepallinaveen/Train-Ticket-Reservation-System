@@ -1,35 +1,15 @@
 pipeline{
-    agent any
+    agent{
+        label "docker"
+    }
     stages{
-        stage('Build mvn packages'){
-            steps{
-                sh 'mvn clean install'
-
-            }
-        }
-        stage('test packages'){
-            steps{
-                sh 'mvn test'
-            }
-        }
-        stage('sonar anylasis'){
+        stage("Bulid a code"){
             steps{
                 script{
-                    withSonarQubeEnv(credentialsId: 'sonar') {
-                        sh 'mvn sonar:sonar'
-                   }
+
+                    sh "mvn clean install"
                 }
             }
         }
-        stage('Quality Gate') {
-            steps {
-                script {
-                     def qualityGate = waitForQualityGate()
-                    if (qualityGate.status != 'OK') {
-                        error "Pipeline aborted due to quality gate failure: ${qualityGate.status}"
-                   }
-                }
-           }
-       }
     }
-} 
+}
